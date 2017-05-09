@@ -52,7 +52,6 @@ def generablancos(data):
 
 def creaunatrama(dni):
 
-    print 'Creando...',dni
 
     dnifinal = dni
     
@@ -74,8 +73,6 @@ def creaunatrama(dni):
 
     base = OrigBaseC01.objects.get(dni=dnifinal,cod_cam=29)
 
-  
-    
     m = []
 
     # Tipo de registro - 1
@@ -241,6 +238,7 @@ def creaunatrama(dni):
 
 
     #Sexo-2
+
     sexo =str(base.sexo)
 
     
@@ -305,6 +303,7 @@ def creaunatrama(dni):
 
 
     reference3 = str(base.codigoautorizacion).replace("'",'').replace('xa0','').replace('u','')[0:6]
+
     reference3 = re.sub(r'\s', '', reference3)
     eb = 100 - len(reference3)
     reference3 = reference3 + generablancos(eb)
@@ -340,9 +339,8 @@ def creaunatrama(dni):
     #Cuenta bancaria - 20
 
     
-
-
     cuentabancaria = base.tarjetacredito[0:16]
+
     cuentabancaria = re.sub(r'\s', '', cuentabancaria)
     eb = 20 - len(cuentabancaria)
     cuentabancaria = cuentabancaria + generablancos(eb)
@@ -397,8 +395,6 @@ def creaunatrama(dni):
     m.append(ccampana)#codigo de campana - 10 / 2-11
     m.append('      ') #codigo de producto paquete - 6 / 12-17
     m.append(codigoproductosimple)#codigo de producto simple - 60 / 18-77
-
-
     m.append(cuentabancaria)#numero de cuenta bancaria - 20 / 78-97
     m.append(dni)#numero de DNI - 15 / 98-112
     m.append('1')#plan - 1 / 113-113
@@ -494,6 +490,7 @@ def creaunatramadependiente(dni,dni_dependiente,nombre,sexo,dependientes,reldepe
     base = OrigBaseC01.objects.get(dni=dnifinal,cod_cam=29)
 
 
+
     m = []
 
     # Tipo de registro - 1
@@ -501,7 +498,9 @@ def creaunatramadependiente(dni,dni_dependiente,nombre,sexo,dependientes,reldepe
     eb = 1 - len(tipo)
     tipo = tipo + generablancos(eb)
 
+
     ccampana = ''
+
     eb = 10 - len(ccampana)
     ccampana = ccampana + generablancos(eb)
 
@@ -708,8 +707,8 @@ def creaunatramadependiente(dni,dni_dependiente,nombre,sexo,dependientes,reldepe
     base.codigoautorizacion = base.codigoautorizacion.encode('ascii','ignore')
     base.codigoautorizacion = base.codigoautorizacion.encode('ascii','replace')
 
-
     reference3 = base.codigoautorizacion.replace("'",'').replace('xa0','').replace('u','')[0:6]
+
     reference3 = re.sub(r'\s', '', reference3)
     eb = 100 - len(reference3)
     reference3 = reference3 + generablancos(eb)
@@ -761,7 +760,10 @@ def creaunatramadependiente(dni,dni_dependiente,nombre,sexo,dependientes,reldepe
     fechaefectividad = fechaefectividad + generablancos(eb)
 
     #DNI - 15
+
     dni = ''
+
+
     eb = 15 - len(dni)
     dni = dni + generablancos(eb)
 
@@ -813,8 +815,10 @@ def creaunatramadependiente(dni,dni_dependiente,nombre,sexo,dependientes,reldepe
     m.append(vendedor)#codigo de vendedor - 20 / 134-153
     m.append(generablancos(10))#codigo de banco - 10 / 154-163
     m.append(codigotarjeta)#codigo de tarjeta de credito - 2 /164-165
+
     m.append('  ')#metodo de pago - 2 / 166-167
     m.append('00')#frecuencia de pago - 2 / 168-169
+
     m.append(nombre)# nombre y apellido del contratante - 50 / 170-219
     m.append(ncontratante)#nombre del contratante - 30 / 220-249
     m.append(scontratante)#segundo nombre del contratante - 15 / 250-264
@@ -833,15 +837,19 @@ def creaunatramadependiente(dni,dni_dependiente,nombre,sexo,dependientes,reldepe
     m.append(telefonotrabajo)#telefono de trabajo - 20 / 496-515
     m.append(fechadenacimiento)#fecha de nacimiento - 8 / 516-523
     m.append(sexo)#codigo de sexo - 2 / 524-525
+
     m.append('01')#titulo - 2 / 526-527
+
     m.append(idioma)#idioma - 2 / 528-529
     m.append(generablancos(2))#filler - 2 / 530-531
     m.append(generablancos(2))#filler - 2 / 532-533
     m.append(generablancos(2))#filler - 2 / 534-535
     m.append(generablancos(2))#filler - 2 / 536-537
+
     m.append(generablancos(2))#indicador de envio de polisa - 2 / 538-539
     m.append(generablancos(2))#numero de dependientes - 2 / 540-541
     m.append(reldependencia)#filler - 2 / 542-543
+
     m.append(generablancos(15))#polisa - 15 / 544-558
     m.append(generablancos(9))#filler - 9 / 559-567
     m.append(transaccion)#codigo de transaccion - 3 / 568-570
@@ -853,7 +861,9 @@ def creaunatramadependiente(dni,dni_dependiente,nombre,sexo,dependientes,reldepe
     m.append(reference3)#referencia1 - 100 / 748-847
     m.append(generablancos(100))#referencia2 - 100 / 848-947
     m.append(generablancos(100))#referencia3 - 100 / 948-1047
+
     m.append(generablancos(100))#fecha de expiracion - 5 / 1048-1052
+
     # m.append(generablancos(10))#fecha de aplicacion - 10 / 1053-1062
     # m.append(generablancos(5)) #filler - 5 / 1063-1067
     # m.append(generablancos(3))#filler - 3 / 1068-1070
@@ -921,6 +931,7 @@ def tramaweb(request):
 
 
         return render(request, 'trama.html')
+
 
 
 
@@ -1089,6 +1100,7 @@ def uploadfile(request):
 
 
         dnifinal = None
+
     
         for rx in range(sh.nrows):
 
@@ -1100,7 +1112,9 @@ def uploadfile(request):
 
                         dni =  str(sh.row(rx)[col]).split(':')[1].split('.')[0]
 
+
                         dnifinal =  str(sh.row(rx)[col]).split(':')[1].split('.')[0]
+
 
 
                     if col == 2:
@@ -1112,6 +1126,7 @@ def uploadfile(request):
                         print dt
 
                         if len(dni)==7:
+
 
                             dnifinal ='0'+dni
 
@@ -1130,6 +1145,7 @@ def uploadfile(request):
                         
 
                         base = OrigBaseC01.objects.get(dni=dnifinal)
+
                         
                         if base.fecha_venta_bbva == None:
 
@@ -1186,7 +1202,9 @@ def gentrama(request,id_lote):
                 
         for rx in range(sh.nrows):
 
+
             dep=0
+
 
             for col in range(sh.ncols):
 
@@ -1195,6 +1213,7 @@ def gentrama(request,id_lote):
                     if col == 0:
 
                         dni =  str(sh.row(rx)[col]).split(':')[1].split('.')[0]
+
 
                     if col == 17:
 
@@ -1222,9 +1241,11 @@ def gentrama(request,id_lote):
 
 
                         
+
             if dni:
             
                 trama = trama + creaunatrama(dni)+chr(13) + chr(10)
+
 
                 if int(len(nombre))>10:
 
@@ -1263,7 +1284,7 @@ def gentrama(request,id_lote):
 
         data=trama.replace('"','')
 
-        
+
 
         response = HttpResponse(content_type='text/csv')
     
@@ -1546,7 +1567,9 @@ def actualizabbva(request):
 
             Ticket(numero=result,dni=dni).save()
 
+
             #base.ticket = result
+
 
             base.fecha = datetime.today()-timedelta(hours=5)
 
@@ -1772,7 +1795,9 @@ def ventas(request):
 
             Ticket(numero=result,dni=dni).save()
 
+
             #base.ticket = result
+
 
             base.fecha = datetime.today()-timedelta(hours=5)
 
@@ -2214,6 +2239,7 @@ def reporte(request):
 
             for x in range(len(base)):
 
+
                 base[x]['fgestion'] = ''
 
                 base[x]['fventa'] = ''
@@ -2249,7 +2275,6 @@ def reporte(request):
             writer.writerow([d['count'],d['registros']['fgestion'],d['registros']['fventa'],d['cliente'],d['registros']['nombre_agente'],d['registros']['contacto__nombre'],d['registros']['accion__nombre'],d['registros']['estado__nombre'],d['registros']['observacion'],d['registros']['telefono'],d['registros']['id_orig_base_c__campana']])
 
         return response   
-
 
 @csrf_exempt
 def reportebbva(request,contacto):

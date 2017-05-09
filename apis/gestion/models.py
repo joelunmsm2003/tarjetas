@@ -586,6 +586,7 @@ class Ticket(models.Model):
     base= models.ForeignKey(OrigBaseC01, models.DO_NOTHING, db_column='base', blank=True, null=True)
 
 
+
     class Meta:
         managed = False
         db_table = 'ticket'
