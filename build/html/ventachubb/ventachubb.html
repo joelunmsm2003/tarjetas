@@ -1,0 +1,226 @@
+
+				<form ng-submit='ventabbva(cliente)' class='bbva' >
+
+				
+			<span ng-if='cliente.ticket_venta'><i class="fa fa-ticket" aria-hidden="true"></i> Tickets : {{cliente.ticket_venta}}</span>
+
+
+				<legend>Ventas CHUBB</legend>
+
+
+								<div class="form-group">
+									<label for="nombre">Nombre Apellido Completos</label>
+									<input   type="text" class="form-control"  ng-model='cliente.nombre'  id="nombre">
+								</div>
+
+									<div class='row'>
+
+									<div class='col-md-6'>
+						
+									<div class="form-group">
+										<label for="dni">DNI</label>
+										<input   type="text" class="form-control"  ng-model='cliente.dni'  id="dni">
+									</div>
+
+									</div>
+
+
+									
+									<div class='col-md-6'>
+						
+								
+									<div class="form-group">
+										<label for="direccion">Fecha de Nacimiento</label>
+										<input disabled  type="text" class="form-control"  ng-model='cliente.fecha_nacimiento' id="direccion" >
+									</div>
+
+									</div>
+
+
+
+
+									</div>
+
+
+
+							<div class='row'>
+
+
+								<div class='col-md-6'>
+						
+											<div class="form-group">
+												<label for="distrito">Numero de Celular</label>
+												<input  required type="text" class="form-control"  ng-model='cliente.telefono1' id="distrito" >
+
+											</div>								
+								
+									</div>
+
+
+								<div class='col-md-6'>
+			
+								<div class="form-group">
+									<label for="departamento">Numero de telefono Fijo</label>
+									<input required  type="text" class="form-control"  ng-model='cliente.telefono2' id="departamento" >
+								</div>
+
+								</div>
+
+								<div class='col-md-6'>
+
+								<div class="form-group">
+									<label for="correo">Correo Electronico</label>
+									<input   required type="email" class="form-control"  ng-model='cliente.mail' id="correo" >
+								</div>
+
+								</div>
+
+								<div class='col-md-6'>
+
+
+								<div class="form-group">
+									<label for="dni">Cantidad</label>
+									<input  required="" type="number" class="form-control" ng-change='calcprimatotal(cliente)' ng-model='cliente.cantidad'  id="dni">
+								</div>
+
+			
+								</div>
+
+								</div>
+			
+								<div class="form-group">
+									<label for="nacimiento">Nombre del Producto</label>
+									<input required  type="text" class="form-control"    value='Muerte Accidental' id="nacimiento" >
+								</div>
+
+								<div class="form-group">
+									<label for="dni">Tipo de Cobertura</label>
+
+
+									<select  class="form-control"  ng-model='cliente.cobertura' required><option  value='Solo titular'>Solo Titular</option>
+
+									<option value='Titular y Esposo'>Titular y Esposo(a)</option>
+									<option value='Titular y Familiares'>Titular y Familiares</option>
+									<option value='Titular y Dependientes'>Titular y Dependientes</option>
+									<option value='Solo Esposo(a)'>Solo Esposo(a)</option>
+									<option value='Solo dependientes'>Solo dependientes</option>
+									<option value='Esposo(a) y Dependientes'>Esposo(a) y Dependientes</option>
+
+									</select>
+								</div>
+
+								<div class="form-group">
+									<label for="dni">Direccion</label>
+
+
+									
+
+									<input   type="text" class="form-control"  ng-model='cliente.direccion'  required id="dni">
+
+								</div>
+
+								<div class="form-group">
+											
+
+
+								<div class="row">
+
+									{{dept}}
+									
+									<div class="col-md-4">
+									<label for="dni">Departamento  </label>
+									<select class='form-control'  ng-options="dept.cod_departamento as dept.departamento for dept in departamentos" ng-model="dept" ng-change='buscaprovincia(dept)' required><option></option></select></div>
+
+									{{prov}}
+									<div class="col-md-4">
+									<label for="dni">Provincia  </label>
+									<select class='form-control'  ng-options="prov.cod_provincia as prov.provincia for prov in provincia" ng-model="prov" ng-change='buscadistrito(prov)' required><option></option></select></div>
+
+									{{dist}}
+									<div class="col-md-4">
+									<label for="dni">Distrito </label>	
+									<select class='form-control'  ng-options="dist.cod_distrito as dist.distrito for dist in distrito" ng-model="dist"  required><option></option></select>	
+
+
+									</div>
+
+								</div>
+
+
+								</div>
+
+								<div class='row'>
+
+								<div class='col-md-6'>
+
+										<div class="form-group">
+											<label for="dni">Tipo de Envio</label>
+
+											<select  class="form-control"  ng-model='cliente.tipo_envio' required><option></option><option value='Email'>Email</option>
+
+											<option value='Domicilio'>Domicilio</option>
+											
+											</select>
+											
+
+										</div>
+
+								</div>
+
+								<div class='col-md-6'>
+
+										<div class="form-group">
+											<label for="dni">Sexo </label>
+
+											<select  class="form-control"  ng-model='cliente.sexo' required><option></option><option value='01'>Masculino</option>
+
+											<option value='02'>Femenino</option>
+											
+											</select>
+											
+
+										</div>
+
+
+								</div>
+
+								</div>
+
+
+
+								<div class='row'>
+
+								<div class='col-md-6'>
+
+
+									<div class="form-group">
+									<label for="dni">Prima</label>
+									<input  required type="text" class="form-control"   ng-model='cliente.prima_mensual' value='25' id="dni">
+									</div>
+
+
+								</div>
+
+								<div class='col-md-6'>
+
+									<div class="form-group">
+									<label for="dni">Todo Prima</label>
+
+									<input   type="text" class="form-control"  ng-model='cliente.todo_prima' required id="dni">
+
+									</div>
+
+								</div>
+								
+								</div>	
+
+							
+
+									<button type="submit" class="btn btn-danger">Venta CHUBB</button>
+
+
+
+
+								</form>
+
+
