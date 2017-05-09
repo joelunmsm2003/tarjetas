@@ -1,0 +1,128 @@
+
+
+								
+								<form ng-submit='tipifica(resultado)' class='animated zoomInDown bbva'>
+
+									
+													
+												
+								
+
+								<legend>TIPIFICACION {{resultado.telefono}}  <span ng-if='cliente.fecha_tipifica_bbva'><i class="fa fa-smile-o" aria-hidden="true"></i></span>
+								<span ng-if='!cliente.fecha_tipifica_bbva'><i class="fa fa-meh-o" aria-hidden="true"></i></span>
+													</legend>
+
+													<h5>{{cliente.contacto__nombre}}</h5>
+
+
+
+								<div class="form-group">
+									<label for="nombre">Observacion</label>
+
+									
+									<textarea   type="text" rows="6" class="form-control"  ng-model='resultado.observacion'  id="nombre"></textarea> 
+								</div>
+
+
+
+							<!-- 	<div class='panel' ng-hide='bbvamuestra'>
+									
+									<select required class='form-control' ><option value='1'>Solo actualiza</option><option value='0'>Actualiza y Venta</option><option value='0'>No Acepta</option></select>
+
+								</div> -->
+
+
+								<div class='panel' >
+
+
+								<div class="form-group">
+
+
+									<label for="nombre">Contacto </label>
+
+									
+									<select ng-change='traeacciones(resultado.contacto)' class='form-control' ng-options="item.id as item.nombre for item in contacto track by item.id" ng-model="resultado.contacto" required><option></option></select>
+
+								</div>
+
+								<div class="form-group">
+
+								<label for="accion">Accion  </label>
+								
+								<select 
+										
+										class='form-control'
+								        ng-change="getestados(resultado.accion)"
+								        ng-options="o.accion as o.accion__nombre for o in listaaciones" 
+								        ng-model="resultado.accion" >
+								</select>
+
+								</div>
+
+
+						
+
+						<!-- 		<div class="form-group">
+
+									<label for="estado">Estado    </label>
+
+									
+									<select    class='form-control' 
+											  
+											  ng-options="p.estado as p.estado__nombre for p in estados" 
+											  ng-model="resultado.estado"
+											  ></select>
+
+								</div> -->
+
+
+								</div>
+
+
+								
+
+
+
+									
+
+
+								<!-- 	<div class="form-group">
+
+									<label  for="estado"><i class="fa fa-calendar" aria-hidden="true"></i> Agendar {{resultado.fagenda}}</label>
+
+									</div>
+
+
+								   <div class="form-group">						
+
+								   <input type="date" class="form-control"  ng-model="resultado.fecha"  />
+									
+								   <input type="time" class="form-control"  ng-model="resultado.mytime"  />
+								
+								   </div>
+
+								   
+
+								    
+
+									<div  class="form-group">
+
+
+									<label for="estado"><i class="fa fa-phone-square" aria-hidden="true"></i> Telefono Adicional</label>
+									<input ng-model='resultado.tadicional' class='form-control' placeholder="Telefono Adicional" />
+
+									</div> -->
+
+									<button class='btn btn-info' type='submit' ng-show='tipificashow' >Guardar Tipificacion</button>
+
+
+									<a class='btn btn-info' ng-hide='tipificashow' ng-click='tipificamal()' disabled >No permitido</a>
+
+
+									</form>
+
+
+								 
+									</div>
+							
+
