@@ -580,11 +580,11 @@ class Tipificacion(models.Model):
         db_table = 'tipificacion'
 
 class Ticket(models.Model):
-    numero = models.CharField(db_column='numero', max_length=1000, blank=True, null=True)
+    numero = models.CharField(db_column='numero', max_length=10000, blank=True, null=True)
     dni = models.CharField(db_column='dni', max_length=100, blank=True, null=True)
     fecha = models.DateTimeField(db_column='fecha')
     base= models.ForeignKey(OrigBaseC01, models.DO_NOTHING, db_column='base', blank=True, null=True)
-
+    estado= models.CharField(db_column='estado', max_length=100, blank=True, null=True)
 
 
     class Meta:
