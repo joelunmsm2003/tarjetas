@@ -128,16 +128,20 @@
 
 									
 									<div class="col-md-4">
+
+							
 									<label for="dni">Departamento  </label>
 									<select class='form-control'  ng-options="dept.cod_departamento as dept.departamento for dept in departamentos" ng-model="dept" ng-change='buscaprovincia(dept)' required><option></option></select></div>
 
 								
 									<div class="col-md-4">
+									
 									<label for="dni">Provincia  </label>
 									<select class='form-control'  ng-options="prov.cod_provincia as prov.provincia for prov in provincia" ng-model="prov" ng-change='buscadistrito(prov)' required><option></option></select></div>
 
 	
 									<div class="col-md-4">
+								
 									<label for="dni">Distrito </label>	
 									<select class='form-control'  ng-options="dist.cod_distrito as dist.distrito for dist in distrito" ng-model="dist"  required><option></option></select>	
 
