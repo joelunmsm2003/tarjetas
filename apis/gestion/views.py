@@ -940,19 +940,37 @@ def reporteticket(request):
 
     if request.method == 'GET':
 
+
+
+
         data = Ticket.objects.filter(base__isnull=True)
 
         for d in data:
-
-            print d
 
             d.base_id = OrigBaseC01.objects.filter(dni__contains=d.dni,cod_cam=29).values('id')[0]['id']
 
             d.save()
 
-            print d.dni,OrigBaseC01.objects.filter(dni__contains=d.dni,cod_cam=29).values('id')[0]['id']
 
         data = Ticket.objects.all().exclude(numero='NO').exclude(numero__contains='Warning').values('id','numero','dni','base__nombre','base__telefono1','base__mail','base__fecha_actualizar_bbva').order_by('base__nombre','base__fecha_actualizar_bbva')
+
+        #data=Ticket.objects.filter(dni='45420711').exclude(numero='NO').exclude(estado='No Valido').values('base__nombre','dni','base__telefono1','base__mail','base__fecha_actualizar_bbva').annotate(ff=Max('dni'))
+
+        
+        # for d in data:
+
+        #     num = Ticket.objects.filter(dni=d['dni']).exclude(numero='NO').exclude(estado='No Valido')
+
+        #     t=''
+
+        #     for n in num:
+
+        #         t=t+n.numero+'-'
+
+        #     d['numero'] = t
+
+
+
 
         response = HttpResponse(content_type='text/csv')
 
@@ -975,7 +993,64 @@ def reporteticket(request):
 
         return response  
 
+@csrf_exempt
+def reporteticketlineal(request):
 
+    if request.method == 'GET':
+
+
+
+        data = Ticket.objects.filter(base__isnull=True)
+
+        for d in data:
+
+            d.base_id = OrigBaseC01.objects.filter(dni__contains=d.dni,cod_cam=29).values('id')[0]['id']
+
+            d.save()
+
+
+        #data = Ticket.objects.all().exclude(numero='NO').exclude(numero__contains='Warning').values('id','numero','dni','base__nombre','base__telefono1','base__mail','base__fecha_actualizar_bbva').order_by('base__nombre','base__fecha_actualizar_bbva')
+
+        data=Ticket.objects.all().exclude(numero='NO').exclude(estado='No Valido').values('base__nombre','dni','base__telefono1','base__mail','base__fecha_actualizar_bbva').annotate(ff=Max('dni'))
+
+        
+        for d in data:
+
+            num = Ticket.objects.filter(dni=d['dni']).exclude(numero='NO').exclude(estado='No Valido')
+
+            t=''
+
+            for n in num:
+
+                t=t+n.numero+'-'
+
+            d['numero'] = t
+
+            print d['dni']
+
+
+
+
+        response = HttpResponse(content_type='text/csv')
+
+        response['Content-Disposition'] = 'attachment; filename="ReporteTicket.csv"'
+
+        writer = csv.writer(response)
+
+        writer.writerow(['Nombre','DNI','Telefono','Mail','Fecha Gestion','Tickets'])
+        
+
+        for d in data:
+
+            print d
+
+            d['base__nombre'] = d['base__nombre'].encode('ascii','ignore')
+            
+            d['base__nombre'] = d['base__nombre'].encode('ascii','replace')
+
+            writer.writerow([d['base__nombre'],d['dni'],d['base__telefono1'],d['base__mail'],str(d['base__fecha_actualizar_bbva'])[0:11],d['numero']])
+
+        return response
 
 @csrf_exempt
 def audios(request):
@@ -2223,6 +2298,34 @@ def distrito(request,provincia):
         return HttpResponse(data_json, content_type="application/json")
 
 
+@csrf_exempt
+def actualizaticket(request):
+
+    if request.method == 'GET':
+
+        data=Ticket.objects.filter(dni='45420711').values('base__nombre','dni').annotate(ff=Max('dni'))
+
+        for d in data:
+
+            num = Ticket.objects.filter(dni=d['dni'])
+
+            t=''
+
+            for n in num:
+
+                t=t+n.numero+'-'
+
+            d['numero'] = t
+
+
+
+        data = ValuesQuerySetToDict(data)
+
+        data_json = simplejson.dumps(data)
+
+        return HttpResponse(data_json, content_type="application/json")
+
+
 
 @csrf_exempt
 def reporte(request):
@@ -2651,7 +2754,54 @@ def ticket(request,dni):
 
     return HttpResponse(result, content_type="application/json")
 
+@csrf_exempt
+def generaticketactualiza(request,dni):
 
+    url = 'http://192.168.40.4/sql/sorteo.php'
+
+    base = OrigBaseC01.objects.get(dni__contains=dni,cod_cam=29)
+
+    venta = 0
+    
+    actualiza=1
+
+    data = {'dni':dni,'cliente':base.nombre,'agente':base.nombre_agente,'actualiza':actualiza,'venta':venta}
+
+    print data
+        
+    r = requests.post(url,data)
+
+    result = r.text.strip()
+    
+    Ticket(numero=result,dni=dni).save()
+
+    return HttpResponse(result, content_type="application/json")
+
+
+@csrf_exempt
+def generaticketventa(request,dni):
+
+    url = 'http://192.168.40.4/sql/sorteo.php'
+
+    base = OrigBaseC01.objects.get(dni__contains=dni,cod_cam=29)
+
+    venta = base.cantidad
+
+    actualiza = 0
+
+
+    data = {'dni':dni,'cliente':base.nombre,'agente':base.nombre_agente,'actualiza':actualiza,'venta':venta}
+
+    print data
+        
+    r = requests.post(url,data)
+
+    result = r.text.strip()
+    
+    Ticket(numero=result,dni=dni).save()
+
+
+    return HttpResponse(result, content_type="application/json")
 
 
 @csrf_exempt

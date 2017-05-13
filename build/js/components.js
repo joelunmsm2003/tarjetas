@@ -238,6 +238,20 @@ function BbvaController($state,$stateParams,$scope,$location,$http,LlamadaServic
 
 
 	 }
+angular
+  .module('app')
+  .component('bbvachubbcomponent', {
+    templateUrl: 'html/bbvachubb/bbvachubb.html',
+    controller: BbvachubbController,
+    bindings: {
+        onDelete: '&'
+    }
+  });
+
+
+
+function BbvachubbController($scope,$location,$http,LlamadaService){
+	 }
 function BbvacampanaController(LlamadaService,BbvaService,$stateParams,$scope,$location,$http,UserService){
 
 
@@ -316,20 +330,6 @@ function BbvacampanaController(LlamadaService,BbvaService,$stateParams,$scope,$l
  }
 angular
   .module('app')
-  .component('bbvachubbcomponent', {
-    templateUrl: 'html/bbvachubb/bbvachubb.html',
-    controller: BbvachubbController,
-    bindings: {
-        onDelete: '&'
-    }
-  });
-
-
-
-function BbvachubbController($scope,$location,$http,LlamadaService){
-	 }
-angular
-  .module('app')
   .component('botoneracomponent', {
     templateUrl: 'html/botonera/botonera.html',
     controller: BotoneraController,
@@ -341,6 +341,20 @@ angular
 
 
 function BotoneraController($scope,$location,$http,LlamadaService){
+	 }
+angular
+  .module('app')
+  .component('campanacomponent', {
+    templateUrl: 'html/campana/campana.html',
+    controller: CampanaController,
+    bindings: {
+        onDelete: '&'
+    }
+  });
+
+
+
+function CampanaController($scope,$location,$http,LlamadaService){
 	 }
 angular
   .module('app')
@@ -356,20 +370,6 @@ angular
 
 
 function DetallesbotoneraController($scope,$location,$http,LlamadaService){
-	 }
-angular
-  .module('app')
-  .component('campanacomponent', {
-    templateUrl: 'html/campana/campana.html',
-    controller: CampanaController,
-    bindings: {
-        onDelete: '&'
-    }
-  });
-
-
-
-function CampanaController($scope,$location,$http,LlamadaService){
 	 }
 angular
   .module('app')

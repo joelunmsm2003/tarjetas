@@ -51,6 +51,10 @@ urlpatterns = [
     url(r'^actaudio$', 'gestion.views.actaudio'),
     url(r'^arreglachubb$', 'gestion.views.arreglachubb'),
     url(r'^reporteticket$', 'gestion.views.reporteticket'),
+    url(r'^reporteticketlineal$', 'gestion.views.reporteticketlineal'),
+    url(r'^actualizaticket$', 'gestion.views.actualizaticket'),
+    url(r'^generaticketactualiza/(\w+)$', 'gestion.views.generaticketactualiza'),
+    url(r'^generaticketventa/(\w+)$', 'gestion.views.generaticketventa'),
 
 
     #Hotels
