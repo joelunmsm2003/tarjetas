@@ -71,7 +71,7 @@ def creaunatrama(dni):
 
         dnifinal ='000'+dni
 
-    base = OrigBaseC01.objects.get(dni=dnifinal,cod_cam=29)
+    base = OrigBaseC01.objects.get(dni__contains=dnifinal,cod_cam=29)
 
     m = []
 
@@ -1115,6 +1115,117 @@ def generatrama(request):
 
         return HttpResponse(data_json, content_type="application/json")
 
+
+@csrf_exempt
+def generaencriptado(request):
+
+    if request.method == 'POST':
+
+        process_file = request.FILES['file']
+        
+        Lote(file=process_file).save()
+
+        id_lote = Lote.objects.all().values('id').order_by('-id')[0]['id']
+
+        process_file = Lote.objects.get(id=id_lote).file
+
+        xls_name = '/var/www/html/'+str(process_file)
+
+        print xls_name
+
+        book = xlrd.open_workbook(xls_name)
+
+        sh = book.sheet_by_index(0)
+        
+        date =datetime.now()
+
+        data = ''
+
+        data = data + 'DECLARE'+chr(13)+chr(10)
+
+        c=0
+
+        for rx in range(sh.nrows):
+
+            for col in range(sh.ncols):
+
+                if rx > 0:
+
+                    if col == 3:
+
+                        c=c+1
+
+                        dni= str(sh.row(rx)[col]).split('.')[0].replace('number:','')
+
+                        print dni
+
+                        if OrigBaseC01.objects.filter(dni__contains=dni,cod_cam=29).count() ==1:
+
+                            data = data+'LC'+str(c)+str('$Code ')+ "VARCHAR2(2000) :='"+str(OrigBaseC01.objects.get(dni__contains=dni,cod_cam=29).nrotarjetaencriptada)+"';"+chr(10)+chr(13)
+
+        c=0
+
+        data =data+'BEGIN'+chr(13)+chr(10)
+
+        for rx in range(sh.nrows):
+
+            for col in range(sh.ncols):
+
+                if rx > 0:
+
+                    if col == 3:
+
+                        c=c+1
+
+                        dni= str(sh.row(rx)[col]).split('.')[0].replace('number:','')
+
+                        if OrigBaseC01.objects.filter(dni__contains=dni,cod_cam=29).count() ==1:
+
+                            data= data+'LC'+str(c) +str('$Code:=Cryptit.Decrypt(LC')+str(c)+str('$Code);')+chr(10)+chr(13)
+
+
+
+        c=0
+
+        data =data+chr(13)+chr(10)
+
+        for rx in range(sh.nrows):
+
+            for col in range(sh.ncols):
+
+                if rx > 0:
+
+                    if col == 3:
+
+                        c=c+1
+
+                        dni= str(sh.row(rx)[col]).split('.')[0].replace('number:','')
+
+                        if OrigBaseC01.objects.filter(dni__contains=dni,cod_cam=29).count() ==1:
+
+                            data= data+'dbms_output.put_line(LC'+str(c)+str('$Code) ;')+chr(10)+chr(13)
+
+        
+
+        data =data+'END;'+chr(13)+chr(10)
+
+        data = data+ '/'
+
+
+        response = HttpResponse(content_type='text/csv')
+    
+        response['Content-Disposition'] = 'attachment; filename="Trama.txt"'
+
+        response.write(u'\ufeff'.encode('utf8'))
+    
+        writer = csv.writer(response)
+
+        writer.writerow([data])
+
+        return response
+
+
+
 @csrf_exempt
 def contactos(request):
 
@@ -1190,6 +1301,8 @@ def uploadfile(request):
 
                         dnifinal =  str(sh.row(rx)[col]).split(':')[1].split('.')[0]
 
+                        print dnifinal
+
 
 
                     if col == 2:
@@ -1219,7 +1332,7 @@ def uploadfile(request):
 
                         
 
-                        base = OrigBaseC01.objects.get(dni=dnifinal)
+                        base = OrigBaseC01.objects.get(dni__contains=dnifinal)
 
                         
                         if base.fecha_venta_bbva == None:
@@ -1628,17 +1741,22 @@ def actualizabbva(request):
 
         venta = 0
 
-        actualiza=1
+        actualiza='17/05/2017'
 
         data = {'dni':dni,'cliente':base.nombre,'agente':base.nombre_agente,'actualiza':actualiza,'venta':venta}
 
         if recupero == None:
+
+
+            print 'Entroooooooo...'
 
             base.contacto_id = 6
 
             r = requests.post(url,data)
 
             result = r.text.strip()
+
+            print 'Respuesta.................',result
 
             Ticket(numero=result,dni=dni).save()
 
