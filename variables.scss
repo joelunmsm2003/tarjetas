@@ -517,7 +517,7 @@ $state-info-bg:                  #28CC9E !default;
 $state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
 
 $state-warning-text:             #fff !default;
-$state-warning-bg:               #28CC9E !default;
+$state-warning-bg:               red !default;
 $state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) !default;
 
 $state-danger-text:              $brand-info !default;
