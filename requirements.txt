@@ -12,7 +12,7 @@ debtagshw==0.1
 decorator==3.3.2
 defer==1.0.6
 dirspec==13.10
-Django==1.9.4
+Django==1.11.29
 django-celery==3.2.1
 django-cors-headers==2.0.2
 django-jwt-auth==0.0.2
